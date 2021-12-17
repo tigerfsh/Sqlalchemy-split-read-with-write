@@ -4,7 +4,7 @@ from flask import jsonify
 
 from flask_sqlalchemy import SQLAlchemy, SignallingSession, get_state
 from sqlalchemy import orm
-
+from sqlalchemy import func 
 from contextlib import contextmanager
 
 app = Flask(__name__)
@@ -91,6 +91,13 @@ def del_obj():
 
 
     
+    return jsonify()
+
+@app.route("/list")
+def get_all_users():
+    # count() vs func.count()
+    print(User.query.count())
+    print(db.session().query(func.count(User.id)).scalar())
     return jsonify()
 
 
