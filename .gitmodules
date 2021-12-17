@@ -1,0 +1,3 @@
+[submodule "kingshard"]
+	path = kingshard
+	url = git@github.com:flike/kingshard.git

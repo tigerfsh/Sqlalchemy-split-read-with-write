@@ -74,3 +74,5 @@ docker exec -it mysql_master bash
 ```
 docker exec -it mysql_slave bash
 ```
+
+git clone --recursive ssh://****

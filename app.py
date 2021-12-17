@@ -21,6 +21,10 @@ app.config['SQLALCHEMY_BINDS'] = {  # get_engine的bind参数为该配置的键
 class RoutingSession(SignallingSession):
     def get_bind(self, mapper=None, clause=None):
         """当进行数据操作时, 会调用该方法来获取进行该操作的数据库引擎(连接)"""
+        print("#"*50)
+        print(f"map: {mapper}")
+        print(f"clause: {clause}, {type(clause)}")
+        print("#"*50)
 
         state = get_state(self.app)
         if self._flushing:  # 增删改操作, 使用主库
@@ -86,8 +90,8 @@ def del_obj():
     #     user.age = 1000
     #     db.session.add(user)
 
-        User.query.filter_by(id=id).update({"age": 55})  # 打在从库
-        # User.query.filter_by(id=id).delete()  # 打在从库
+        # User.query.filter_by(id=id).update({"age": 55})  # 打在从库
+        User.query.filter_by(id=id).delete()  # 打在从库
 
 
     
