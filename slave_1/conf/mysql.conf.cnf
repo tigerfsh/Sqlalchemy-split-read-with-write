@@ -8,3 +8,5 @@ relay-log = /var/log/mysql/mysql-relay-bin.log
 log_bin = /var/log/mysql/mysql-bin.log
 binlog_do_db = mydb
 
+gtid-mode=on
+enforce-gtid-consistency

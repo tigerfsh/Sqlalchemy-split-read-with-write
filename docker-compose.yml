@@ -1,10 +1,10 @@
 version: '3'
 services:
-  mysql_master:
+  master:
     image: mysql:5.7
     env_file:
       - ./master/mysql_master.env
-    container_name: "mysql_master"
+    container_name: "master"
     restart: "no"
     ports:
       - 4406:3306
@@ -14,37 +14,54 @@ services:
     networks:
       - overlay
 
-  mysql_slave_0:
+  slave_0:
     image: mysql:5.7
     env_file:
       - ./slave_0/mysql_slave.env
-    container_name: "mysql_slave_0"
+    container_name: "slave_0"
     restart: "no"
     ports:
       - 5506:3306
     depends_on:
-      - mysql_master
+      - master
     volumes:
       - ./slave_0/conf/mysql.conf.cnf:/etc/mysql/conf.d/mysql.conf.cnf
       - ./slave_0/data:/var/lib/mysql
     networks:
       - overlay
 
-  mysql_slave_1:
+  slave_1:
     image: mysql:5.7
     env_file:
       - ./slave_1/mysql_slave.env
-    container_name: "mysql_slave_1"
+    container_name: "slave_1"
     restart: "no"
     ports:
       - 6606:3306
     depends_on:
-      - mysql_master
+      - master
     volumes:
       - ./slave_1/conf/mysql.conf.cnf:/etc/mysql/conf.d/mysql.conf.cnf
       - ./slave_1/data:/var/lib/mysql
     networks:
       - overlay
+  
+  maxscale:
+    image: mariadb/maxscale
+    container_name: "maxscale"
+    depends_on:
+      - master
+      - slave_0
+      - slave_1
+    volumes:
+      - ./maxscale.cnf:/etc/maxscale.cnf
+    ports:
+      - "4008:4008"  # read only port
+      - "4006:4006"  # readwrite port
+      - "8989:8989"  # REST API port
+    networks:
+      - overlay
+
 networks:
   overlay:
 

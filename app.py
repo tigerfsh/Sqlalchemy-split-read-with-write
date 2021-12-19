@@ -12,13 +12,13 @@ from sqlalchemy.sql.dml import Delete
 from contextlib import contextmanager
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:111@localhost:4406/mydb'  # 设置数据库连接地址
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://mydb_slave_user:mydb_slave_pwd@localhost:4006/mydb'  # 设置数据库连接地址
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # 是否追踪数据库变化(触发某些钩子函数), 开启后效率会变
 app.config['SQLALCHEMY_ECHO'] = True  # 开启后, 控制台会打印底层执行的SQL语句
 
 app.config['SQLALCHEMY_BINDS'] = {  # get_engine的bind参数为该配置的键
-    'master': 'mysql+pymysql://root:111@localhost:4406/mydb',
-    'slave': 'mysql+pymysql://root:111@localhost:5506/mydb'
+    'master': 'mysql+pymysql://mydb_slave_user:mydb_slave_pwd@localhost:4006/mydb',
+    'slave': 'mysql+pymysql://mydb_slave_user:mydb_slave_pwd@localhost:4008/mydb'
 }
 
 
