@@ -130,6 +130,14 @@ def get_all_users():
     data = [{"id": user.id, "name": user.name, "age": user.age} for user in users]
     return jsonify(data=data)
 
+@app.route("/test")
+def test():
+    with db.auto_commit():
+        User.query.filter_by(id=2).update({"age": 200})
+        print(User.query.all())
+        User.query.filter_by(id=2).update({"age": 201})
+    return jsonify(success=True, message="All is ok!")
+
 
 if __name__ == '__main__':
     # db.drop_all()  # 删除所有继承自db.Model的表
